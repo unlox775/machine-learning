@@ -45,11 +45,14 @@ $GLOBALS['success'] = [
 function mainRun() {
 	$population = new TrialPopulation($GLOBALS['argv'][1], $GLOBALS['success']);
 
+   $rounds = 0;
 	while(1) {
+      $rounds++;
 		$population->runTrials();
 
 		$winner = $population->getPerfectNetwork();
 		if ( $winner ) {
+         echo "\nFinal Winning Neural Net (took $rounds rounds): \n";
 			$winner->debugWeights();
 			exit;
 		}
