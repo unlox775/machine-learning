@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) .'/lib/engine/TrialPopulation.php');
+require_once(dirname(__FILE__) .'/lib/engine/TrialRunner.php');
 
 $successful_checkerboards = array(
 	[1,0,
@@ -42,27 +42,30 @@ $GLOBALS['success'] = [
    [[0,1,1,0],[1]],
    ];
 
-function mainRun() {
-	$population = new \Engine\TrialPopulation($GLOBALS['argv'][1], $GLOBALS['success']);
+function mainRun($pop_size,$success) {
+	$runner = new \Engine\TrialRunner($pop_size,$success,false);
 
-	$rounds = 0;
-	while(1) {
-      $rounds++;
-		$population->runTrials();
+	$total_rounds = 0;
+	$total_elapsed = 0;
+	$trials = [];
 
-		$winner = $population->getPerfectNetwork();
-		if ( $winner ) {
-         echo "\nFinal Winning Neural Net (took $rounds rounds): \n";
-			$winner->debugWeights();
-			exit;
-		}
+	while (1) {
+		list($rounds, $winner, $elapsed) = $runner->runTrial();
+		$total_rounds += $rounds;
+		$total_elapsed += $elapsed;
+		$trials[] = [$rounds, $winner, $elapsed];
 
-		$population = $population->generateEvolvedPopulation();
-
-		// sleep(2);
+		echo sprintf(
+			"Average: %02.2f balanced-cost, %02.3f sec -- (%d rounds in %.3f sec)\n",
+			($total_rounds / count($trials)) * ($pop_size/50),
+			($total_elapsed / count($trials)),
+			$rounds,
+			$elapsed
+		);
 	}
-	
+
+
 }
 
 
-mainRun();
+mainRun($argv[1],$GLOBALS['success']);

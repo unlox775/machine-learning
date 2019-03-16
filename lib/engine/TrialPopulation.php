@@ -10,10 +10,12 @@ class TrialPopulation {
 	private $__trials_run = false;
 	public $winners_percentage = 5;
 	public $mutate_percentage = 10;
+	public $verbose = false;
 
-	public function __construct($pop_size, $success_trials, $seed_babies = false) {
+	public function __construct($pop_size, $success_trials, $seed_babies = false, $verbose = false) {
 		$this->__size = $pop_size;
 		$this->__success_trials = $success_trials;
+		$this->verbose = $verbose;
 
 		$this->__population = ( $seed_babies === false
 			? $this->__generateBasePopulation()
@@ -80,9 +82,11 @@ class TrialPopulation {
 		);
 		$this->__trials_run = true;
 
-		echo "\n\nROUND WINNERS (working toward 28 Yay's):\n";
-		foreach (array_reverse(array_slice($this->__population,0,5)) as $net) {
-			echo "#". $net->id ." had ". $net->yay_count ." yay's\n";
+		if ( $this->verbose ) {
+			echo "\n\nROUND WINNERS (working toward 28 Yay's):\n";
+			foreach (array_reverse(array_slice($this->__population,0,5)) as $net) {
+				echo "#". $net->id ." had ". $net->yay_count ." yay's\n";
+			}
 		}
 	}
 
@@ -111,6 +115,6 @@ class TrialPopulation {
 			$seed_babies[] = $this->__population[$i]->net;
 		}
 
-		return new TrialPopulation($this->__size, $this->__success_trials, $seed_babies);
+		return new TrialPopulation($this->__size, $this->__success_trials, $seed_babies, $this->verbose);
 	}
 }
