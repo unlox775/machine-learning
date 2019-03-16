@@ -1,4 +1,5 @@
 <?php
+namespace Engine;
 
 require_once(dirname(__FILE__) .'/NeuralNet.php');
 
@@ -23,7 +24,7 @@ class TrialPopulation {
 	private function __generateBasePopulation() {
 		$new_population = [];
 		foreach ( range(0,$this->__size - 1) as $i ) {
-			$new_population[] = (object) [ 'id' => $i+1, 'net' => new NeuralNet($this->__success_trials), 'yay_count' => 0 ];
+			$new_population[] = (object) [ 'id' => $i+1, 'net' => new \Engine\NeuralNet($this->__success_trials), 'yay_count' => 0 ];
 		}
 		return $new_population;
 	}
@@ -42,7 +43,7 @@ class TrialPopulation {
 			// 	is_null($seed_babies[ $i % count($seed_babies) ])
 			// ]) ."\n";
 			// $clone_from->debugWeights();
-			$new_net = new NeuralNet($this->__success_trials,$clone_from);
+			$new_net = new \Engine\NeuralNet($this->__success_trials,$clone_from);
 
 			///  Mutate babies, but leave the first original Seed Baby set, un-mutated
 			if ( $i >= count($seed_babies) ) {

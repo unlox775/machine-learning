@@ -1,4 +1,5 @@
 <?php
+namespace Engine;
 
 class Neuron {
 	public $verbose = false;
@@ -44,7 +45,7 @@ class Neuron {
 			if ( (rand(0,1000000) / 1000000) > ($mutate_percentage/100) ) continue;
 
 			// Mutate!
-			$this->downline_neuron_weights[$i] = \Neuron::randWeight();
+			$this->downline_neuron_weights[$i] = \Engine\Neuron::randWeight();
 		}
 	}
 

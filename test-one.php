@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) .'/TrialPopulation.php');
+require_once(dirname(__FILE__) .'/lib/engine/TrialPopulation.php');
 
 $successful_checkerboards = array(
 	[1,0,
@@ -43,9 +43,9 @@ $GLOBALS['success'] = [
    ];
 
 function mainRun() {
-	$population = new TrialPopulation($GLOBALS['argv'][1], $GLOBALS['success']);
+	$population = new \Engine\TrialPopulation($GLOBALS['argv'][1], $GLOBALS['success']);
 
-   $rounds = 0;
+	$rounds = 0;
 	while(1) {
       $rounds++;
 		$population->runTrials();

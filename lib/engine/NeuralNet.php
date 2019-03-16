@@ -1,4 +1,5 @@
 <?php
+namespace Engine;
 
 require_once(dirname(__FILE__) .'/Neuron.php');
 
@@ -18,10 +19,10 @@ class NeuralNet {
 		// 	[0,0,-1,1],
 		// 	[0,0,-1,1],
 		// );
-		$n_frow_1 = new Neuron($verbose);
-		$n_frow_2 = new Neuron($verbose);
-		$n_frow_3 = new Neuron($verbose);
-		$n_frow_4 = new Neuron($verbose);
+		$n_frow_1 = new \Engine\Neuron($verbose);
+		$n_frow_2 = new \Engine\Neuron($verbose);
+		$n_frow_3 = new \Engine\Neuron($verbose);
+		$n_frow_4 = new \Engine\Neuron($verbose);
 		$first_row = [$n_frow_1,$n_frow_2,$n_frow_3,$n_frow_4];
 
 		// $srow_weights = array(
@@ -30,34 +31,34 @@ class NeuralNet {
 		// 	[1,-1],
 		// 	[1,-1],
 		// );
-		$n_srow_1 = new Neuron($verbose);
-		$n_srow_2 = new Neuron($verbose);
-		$n_srow_3 = new Neuron($verbose);
-		$n_srow_4 = new Neuron($verbose);
+		$n_srow_1 = new \Engine\Neuron($verbose);
+		$n_srow_2 = new \Engine\Neuron($verbose);
+		$n_srow_3 = new \Engine\Neuron($verbose);
+		$n_srow_4 = new \Engine\Neuron($verbose);
 		$second_row = [$n_srow_1,$n_srow_2,$n_srow_3,$n_srow_4];
 
-		$n_trow_1 = new Neuron($verbose);
-		$n_trow_2 = new Neuron($verbose);
+		$n_trow_1 = new \Engine\Neuron($verbose);
+		$n_trow_2 = new \Engine\Neuron($verbose);
 		$third_row = [$n_trow_1,$n_trow_2];
 
-		$the_lord_neuron = new Neuron($verbose);
+		$the_lord_neuron = new \Engine\Neuron($verbose);
 
 		foreach ( $first_row  as $i => $n ) {
 			$weights = null;
 			if ($clone_from_net) { $weights = $clone_from_net->net[0][$i]->downline_neuron_weights; }
-			else                 { $weights = [\Neuron::randWeight(),\Neuron::randWeight(),\Neuron::randWeight(),\Neuron::randWeight()]; }
+			else                 { $weights = [\Engine\Neuron::randWeight(),\Engine\Neuron::randWeight(),\Engine\Neuron::randWeight(),\Engine\Neuron::randWeight()]; }
 			$n->attachNeurons($second_row, $weights);
 		}
 		foreach ( $second_row as $i => $n ) {
 			$weights = null;
 			if ($clone_from_net) { $weights = $clone_from_net->net[1][$i]->downline_neuron_weights; }
-			else                 { $weights = [\Neuron::randWeight(),\Neuron::randWeight()]; }
+			else                 { $weights = [\Engine\Neuron::randWeight(),\Engine\Neuron::randWeight()]; }
 			$n->attachNeurons($third_row, $weights);
 		}
 		foreach ( $third_row  as $i => $n ) {
 			$weights = null;
 			if ($clone_from_net) { $weights = $clone_from_net->net[2][$i]->downline_neuron_weights; }
-			else                 { $weights = [\Neuron::randWeight()]; }
+			else                 { $weights = [\Engine\Neuron::randWeight()]; }
 			$n->attachNeurons([$the_lord_neuron], $weights);
 		}
 
