@@ -1,49 +1,54 @@
 <?php
 
 require_once(dirname(__FILE__) .'/lib/engine/TrialRunner.php');
+require_once(dirname(__FILE__) .'/lib/ProblemDomain/CheckerBoard.php');
 
-$successful_checkerboards = array(
-	[1,0,
-	 0,1],
+// $successful_checkerboards = array(
+// 	[1,0,
+// 	 0,1],
 
-	[0,1,
-	 1,0]
-	);
+// 	[0,1,
+// 	 1,0]
+// 	);
 
-$GLOBALS['success'] = [
-   [[0,0,0,0],[0]],
-   [[0,0,0,1],[0]],
-   [[0,0,1,0],[0]],
-   [[0,1,0,0],[0]],
-   [[1,0,0,0],[0]],
-   [[0,0,1,1],[0]],
-   [[0,1,0,1],[0]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,1,0],[0]],
-   [[1,1,0,0],[0]],
-   [[1,1,1,0],[0]],
-   [[1,1,0,1],[0]],
-   [[1,0,1,1],[0]],
-   [[0,1,1,1],[0]],
-   [[1,1,1,1],[0]], #all possible combinations
+// $GLOBALS['success'] = [
+//    [[0,0,0,0],[0]],
+//    [[0,0,0,1],[0]],
+//    [[0,0,1,0],[0]],
+//    [[0,1,0,0],[0]],
+//    [[1,0,0,0],[0]],
+//    [[0,0,1,1],[0]],
+//    [[0,1,0,1],[0]],
+//    [[1,0,0,1],[1]],
+//    [[0,1,1,0],[1]],
+//    [[1,0,1,0],[0]],
+//    [[1,1,0,0],[0]],
+//    [[1,1,1,0],[0]],
+//    [[1,1,0,1],[0]],
+//    [[1,0,1,1],[0]],
+//    [[0,1,1,1],[0]],
+//    [[1,1,1,1],[0]], #all possible combinations
    
-   [[1,0,0,1],[1]], # repeating the number of combinations that return [1] until the ratio of [1] returning and [0] returning are the same
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   ];
+//    [[1,0,0,1],[1]], # repeating the number of combinations that return [1] until the ratio of [1] returning and [0] returning are the same
+//    [[0,1,1,0],[1]],
+//    [[1,0,0,1],[1]],
+//    [[0,1,1,0],[1]],
+//    [[1,0,0,1],[1]],
+//    [[0,1,1,0],[1]],
+//    [[1,0,0,1],[1]],
+//    [[0,1,1,0],[1]],
+//    [[1,0,0,1],[1]],
+//    [[0,1,1,0],[1]],
+//    [[1,0,0,1],[1]],
+//    [[0,1,1,0],[1]],
+//    ];
 
-function mainRun($pop_size,$success) {
-	$runner = new \Engine\TrialRunner($pop_size,$success,false);
+function mainRun($pop_size,$checkerboard_size) {
+	$board = new \ProblemDomain\CheckerBoard($checkerboard_size);
+	$success_sets = $board->generateSuccessSets();
+	// exit;
+
+	$runner = new \Engine\TrialRunner($pop_size,$success_sets,false);
 
 	$total_rounds = 0;
 	$total_elapsed = 0;
@@ -68,4 +73,7 @@ function mainRun($pop_size,$success) {
 }
 
 
-mainRun($argv[1],$GLOBALS['success']);
+mainRun(
+	empty($argv[1]) ? 50 : $argv[1],
+	empty($argv[2]) ? 2 : $argv[2]
+);
