@@ -1,52 +1,19 @@
 <?php
 
 require_once(dirname(__FILE__) .'/lib/engine/TrialRunner.php');
+require_once(dirname(__FILE__) .'/lib/ProblemDomain/CheckerBoard.php');
 
-$successful_checkerboards = array(
-	[1,0,
-	 0,1],
+$board = new \ProblemDomain\CheckerBoard(2); // Size (on one side), of the square checkerboard
+$success_sets = $board->generateSuccessSets();
 
-	[0,1,
-	 1,0]
+mainRun( // Starts with a population size of 5
+	$success_sets,                   // The "Goal", all the right and wrong answers to guide the search
+	empty($argv[1]) ? 5 : $argv[1],  // How much to increase the population size by, each time
+	empty($argv[2]) ? 500 : $argv[2] // How many seconds to run each popuation size, to gain a steady average
 	);
 
-$GLOBALS['success'] = [
-   [[0,0,0,0],[0]],
-   [[0,0,0,1],[0]],
-   [[0,0,1,0],[0]],
-   [[0,1,0,0],[0]],
-   [[1,0,0,0],[0]],
-   [[0,0,1,1],[0]],
-   [[0,1,0,1],[0]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,1,0],[0]],
-   [[1,1,0,0],[0]],
-   [[1,1,1,0],[0]],
-   [[1,1,0,1],[0]],
-   [[1,0,1,1],[0]],
-   [[0,1,1,1],[0]],
-   [[1,1,1,1],[0]], #all possible combinations
-   
-   [[1,0,0,1],[1]], # repeating the number of combinations that return [1] until the ratio of [1] returning and [0] returning are the same
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   [[1,0,0,1],[1]],
-   [[0,1,1,0],[1]],
-   ];
-
-function mainRun($success, $popsize_increment = 5, $seconds_per_popsize = 120) {
+function mainRun($success, $popsize_increment, $seconds_per_popsize) {
 	$pop_size = 5;
-
-	if ( empty($popsize_increment) ) { $popsize_increment = 5; }
-	if ( empty($seconds_per_popsize) ) { $seconds_per_popsize = 120; }
 
 	while(1) {
 		$runner = new \Engine\TrialRunner($pop_size,$success,false);
@@ -84,4 +51,3 @@ function mainRun($success, $popsize_increment = 5, $seconds_per_popsize = 120) {
 }
 
 
-mainRun($GLOBALS['success'], $argv[1], $argv[2]);

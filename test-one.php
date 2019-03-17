@@ -3,45 +3,10 @@
 require_once(dirname(__FILE__) .'/lib/engine/TrialRunner.php');
 require_once(dirname(__FILE__) .'/lib/ProblemDomain/CheckerBoard.php');
 
-// $successful_checkerboards = array(
-// 	[1,0,
-// 	 0,1],
-
-// 	[0,1,
-// 	 1,0]
-// 	);
-
-// $GLOBALS['success'] = [
-//    [[0,0,0,0],[0]],
-//    [[0,0,0,1],[0]],
-//    [[0,0,1,0],[0]],
-//    [[0,1,0,0],[0]],
-//    [[1,0,0,0],[0]],
-//    [[0,0,1,1],[0]],
-//    [[0,1,0,1],[0]],
-//    [[1,0,0,1],[1]],
-//    [[0,1,1,0],[1]],
-//    [[1,0,1,0],[0]],
-//    [[1,1,0,0],[0]],
-//    [[1,1,1,0],[0]],
-//    [[1,1,0,1],[0]],
-//    [[1,0,1,1],[0]],
-//    [[0,1,1,1],[0]],
-//    [[1,1,1,1],[0]], #all possible combinations
-   
-//    [[1,0,0,1],[1]], # repeating the number of combinations that return [1] until the ratio of [1] returning and [0] returning are the same
-//    [[0,1,1,0],[1]],
-//    [[1,0,0,1],[1]],
-//    [[0,1,1,0],[1]],
-//    [[1,0,0,1],[1]],
-//    [[0,1,1,0],[1]],
-//    [[1,0,0,1],[1]],
-//    [[0,1,1,0],[1]],
-//    [[1,0,0,1],[1]],
-//    [[0,1,1,0],[1]],
-//    [[1,0,0,1],[1]],
-//    [[0,1,1,0],[1]],
-//    ];
+mainRun(
+	empty($argv[1]) ? 50 : $argv[1], // Population Size per round
+	empty($argv[2]) ? 2  : $argv[2]  // Size (on one side), of the square checkerboard
+);
 
 function mainRun($pop_size,$checkerboard_size) {
 	$board = new \ProblemDomain\CheckerBoard($checkerboard_size);
@@ -68,12 +33,4 @@ function mainRun($pop_size,$checkerboard_size) {
 			$elapsed
 		);
 	}
-
-
 }
-
-
-mainRun(
-	empty($argv[1]) ? 50 : $argv[1],
-	empty($argv[2]) ? 2 : $argv[2]
-);
