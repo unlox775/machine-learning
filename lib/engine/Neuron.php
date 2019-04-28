@@ -2,20 +2,30 @@
 namespace Engine;
 
 class Neuron {
+	public static $__id_inc = 1;
 	public $verbose = false;
+	public $id = false;
 	public $downline_neurons = [];
 	public $downline_neuron_weights = [];
 	private $value = 0.00;
 	// public $am_i_biased = 0;
 
-	public function __construct($verbose = false) {
+	public function __construct($verbose = false, $set_id = null) {
 		$this->verbose = $verbose;
+		$this->id = is_null($set_id) ? \Engine\Neuron::$__id_inc++ : $set_id;
 	}
 
-	public function attachNeurons($new_downline_neurons,$weights) {
+	public function attachNeurons($new_downline_neurons,$weights = null) {
 		foreach ( $new_downline_neurons as $i => $n ) {
-			$this->downline_neurons[] = $n;
-			$this->downline_neuron_weights[] = $weights[$i];
+			$this->downline_neurons[$n->id] = $n;
+			$this->downline_neuron_weights[$n->id] = is_null($weights) ? \Engine\Neuron::randWeight() : $weights[$i];
+		}
+	}
+
+	public function attachNeuronsToMe($new_upline_neurons,$weights = null) {
+		foreach ( $new_upline_neurons as $i => $n ) {
+			$n->downline_neurons[$this->id] = $this;
+			$n->downline_neuron_weights[$this->id] = is_null($weights) ? \Engine\Neuron::randWeight() : $weights[$i];
 		}
 	}
 

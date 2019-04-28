@@ -83,7 +83,7 @@ class TrialPopulation {
 		$this->__trials_run = true;
 
 		if ( $this->verbose ) {
-			echo "\n\nROUND WINNERS (working toward 28 Yay's):\n";
+			echo "\n\nROUND WINNERS (working toward ". count($this->__success_trials) ." Yay's):\n";
 			foreach (array_reverse(array_slice($this->__population,0,5)) as $net) {
 				echo "#". $net->id ." had ". $net->yay_count ." yay's\n";
 			}
